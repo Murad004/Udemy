@@ -1,0 +1,168 @@
+﻿@model Udemy.WebUI.Models.TeacherAccountViewModel;
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutForModel.cshtml";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<form asp-controller="Instructor" asp-action="CreateCourse" method="post" enctype="multipart/form-data">
+
+    @*<div class="container container-md container-sm mt-5" style="border:2px solid darkviolet;display:flex;align-items:center;">*@
+    <div style="border:2px solid black;text-align:center;" class="mt-5 w-50 h-50 container">
+        <img class="w-50 h-50 mt-3" src="~/Images/engaging-course.jpg" />
+        <div class="w-75 h-75 mx-auto pt-4 mb-2">
+            <input class="form-control border border-primary" type="file">
+        </div>
+    </div>
+    <div style="border:2px solid springgreen;text-align:center;" class="mt-5 w-50 container">
+        <input asp-for="@Model.CourseViewModel.CourseTitle" type="text" class="w-50 mt-5 p-2" placeholder="Course Title" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;" />
+        <input asp-for="@Model.CourseViewModel.CourseContent" type="text" class="w-50 mt-4 p-2" placeholder="Course Content" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;" />
+        <textarea asp-for="@Model.CourseViewModel.Description" class="w-50 mt-4 p-2" placeholder="Course Description" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;"></textarea>
+        @*<input asp-for="@Model.CourseViewModel.Description" type="text" class="w-50 mt-4 mb-3 p-2" placeholder="Course Description" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px; height:200px; text-align:start;" />*@
+    </div>
+
+    @*</div>*@
+
+</form>
+
+@*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
+
+
+<script>
+    CKEDITOR.replace('courseDescription');
+
+
+    
+</script>
+@*<script>
+    $("#SecondPage").hide();
+
+    $("#NextBtn").click(function () {
+        $("#FirstPage").hide();
+        $("#SecondPage").show();
+    });
+
+    $("#ThreePage").hide();
+    $("#NextBtn1").click(function () {
+        $("#SecondPage").hide();
+        $("#ThreePage").show();
+    });
+
+    $("#Price").hide();
+
+    $('#select').change(function () {
+        $("#Price").show();
+        $("#paidOrFreeInput").val($(this).val());
+        console.log($("#paidOrFreeInput").val());
+    });
+    //$('#select2').change(function () {
+    //    $("#SubCategoryId").val($(this).val());
+    //    console.log($("Sub Category ID : "+"#SubCategoryId").val());
+    //});
+
+    //$('#select3').change(function () {
+    //    $("#TopicId").val($(this).val());
+    //    console.log($("Topic ID : " + "#TopicId").val());
+    //});
+
+    //page 4 codes
+
+    //$("#select2").hide();
+    //$("#subcategoryH").hide();
+
+    //$(document).ready(function () {
+    //    $(document).on("change", "#select", function () {
+    //        var subCat = this;
+    //        $.ajax({
+    //            url: "/Instructor/ReturnJsonSubCategories/?categoryId=" + $(subCat).val(),
+    //            type: "GET",
+    //            contentType: "application/json; charset=utf-8",
+    //            datatype: JSON,
+    //            success: function (result) {
+    //                var categories = "";
+    //                $(result).each(function () {
+    //                    categories = categories + '<option selected>Sub Category</option> <option value="' + this.SubCategoryId + '">' + this.SubCategoryName + '</option>'
+    //                });
+    //                console.log(categories)
+    //                var subCateList = $("#select2");
+    //                subCateList.empty();
+    //                subCateList.append(categories);
+    //                $("#select2").show();
+    //                $("#subcategoryH").show();
+    //            },
+    //            error: function (data) {
+    //                console.log(data)
+    //                return "Error";
+    //            }
+    //        });
+    //    });
+    //});
+
+
+    //$("#select3").hide();
+    //$("#topicH").hide();
+    //$(document).ready(function () {
+    //    $(document).on("change", "#select2", function () {
+    //        var subCateg = this;
+    //        $.ajax({
+    //            url: "/Instructor/ReturnJsonTopics/?subCategoryId=" + $(subCateg).val(),
+    //            type: "GET",
+    //            contentType: "application/json; charset=utf-8",
+    //            datatype: JSON,
+    //            success: function (result) {
+    //                var subcategories = "";
+    //                $(result).each(function () {
+    //                    subcategories = subcategories + '<option value="' + this.TopicId + '">' + this.TopicName + '</option>'
+    //                });
+    //                console.log(subcategories)
+    //                var topicList = $("#select3");
+    //                topicList.empty();
+    //                topicList.append(subcategories);
+    //                $("#select3").show();
+    //                $("#topicH").show();
+    //            },
+    //            error: function (data) {
+    //                console.log(data)
+    //                return "Error";
+    //            }
+    //        });
+    //    });
+    //});
+
+
+
+    function AddNewInput() {
+        var myparent = document.getElementById("ObjectivesAndOutcomes");
+        var myinput;
+        var counter = 0;
+        myinput = document.createElement('input');
+        myinput.setAttribute('id', 'objective' + newButtonCounter)
+        myinput.setAttribute('type', 'text');
+        myinput.setAttribute('placeholder', 'Objective And Outcome');
+        myinput.style.display = "block";
+        myinput.style.padding = "10px";
+        myinput.style.marginLeft = "280px";
+        myinput.style.marginTop = "10px";
+        myinput.style.height = "30px";
+        myinput.style.width = "450px";
+        myinput.style.border = "1px solid darkviolet";
+        myinput.style.borderRadius = "2px";
+        myparent.appendChild(myinput);
+    }
+
+</script>*@
