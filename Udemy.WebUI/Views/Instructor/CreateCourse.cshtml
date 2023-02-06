@@ -15,22 +15,20 @@
 
 
 <form asp-controller="Instructor" asp-action="CreateCourse" method="post" enctype="multipart/form-data">
-
-    @*<div class="container container-md container-sm mt-5" style="border:2px solid darkviolet;display:flex;align-items:center;">*@
-    <div style="border:2px solid black;text-align:center;" class="mt-5 w-50 h-50 container">
+    <div style="border:2px solid black;text-align:center;" class="mt-5 w-50 h-50 container container-md container-sm">
         <img class="w-50 h-50 mt-3" src="~/Images/engaging-course.jpg" />
         <div class="w-75 h-75 mx-auto pt-4 mb-2">
             <input class="form-control border border-primary" type="file">
         </div>
     </div>
-    <div style="border:2px solid springgreen;text-align:center;" class="mt-5 w-50 container">
+    <div style="border:2px solid black;text-align:center;" class="mt-5 w-50 container">
         <input asp-for="@Model.CourseViewModel.CourseTitle" type="text" class="w-50 mt-5 p-2" placeholder="Course Title" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;" />
         <input asp-for="@Model.CourseViewModel.CourseContent" type="text" class="w-50 mt-4 p-2" placeholder="Course Content" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;" />
-        <textarea asp-for="@Model.CourseViewModel.Description" class="w-50 mt-4 p-2" placeholder="Course Description" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;"></textarea>
-        @*<input asp-for="@Model.CourseViewModel.Description" type="text" class="w-50 mt-4 mb-3 p-2" placeholder="Course Description" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px; height:200px; text-align:start;" />*@
+        <textarea id="CourseDescription" asp-for="@Model.CourseViewModel.Description" class="w-50 mt-4 p-2" placeholder="Course Description" style="font-size:1.2em;font-weight:500;color:black;border: 1px solid black;border-radius: 2px;"></textarea>
     </div>
+    <div style="border:2px solid black;text-align:center;" class="mt-5 w-50 container container-md container-sm">
 
-    @*</div>*@
+    </div>
 
 </form>
 
@@ -42,13 +40,8 @@
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
 
+<script type="text/javascript">CKEDITOR.replace('CourseDescription');</script>
 
-<script>
-    CKEDITOR.replace('courseDescription');
-
-
-    
-</script>
 @*<script>
     $("#SecondPage").hide();
 

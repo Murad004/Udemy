@@ -37,19 +37,6 @@ namespace Udemy.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Requirements",
-                columns: table => new
-                {
-                    RequirementId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Requirements", x => x.RequirementId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Teachers",
                 columns: table => new
                 {
@@ -221,6 +208,26 @@ namespace Udemy.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Requirements",
+                columns: table => new
+                {
+                    RequirementId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requirements", x => x.RequirementId);
+                    table.ForeignKey(
+                        name: "FK_Requirements_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Videos",
                 columns: table => new
                 {
@@ -278,6 +285,11 @@ namespace Udemy.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Objectives_CourseId",
                 table: "Objectives",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requirements_CourseId",
+                table: "Requirements",
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
