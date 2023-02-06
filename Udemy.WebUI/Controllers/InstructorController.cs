@@ -113,11 +113,15 @@ namespace Udemy.WebUI.Controllers
 
         [Authorize(Roles = "User,Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateCourse(TeacherAccountViewModel model, IFormFile file)
+        public async Task<IActionResult> CreateCourse(TeacherAccountViewModel model, IFormFile file, List<ObjectiveAndOutcomes> objectives, List<Requirement> requirements)
         {
             var userId = httpContextAccessor.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
-            
+
+            var category = _categoryService.GetById(1);
+            var subcategory = _subCategoryService.GetById(1);
+            var topic = _topicService.GetById(1);
+
             foreach (var teacher in _teacherService.GetAll())
             {
                 if (teacher.MyUserId == user.Id)
@@ -134,108 +138,35 @@ namespace Udemy.WebUI.Controllers
                             await file.CopyToAsync(stream);
                         }
                         model.CourseViewModel.ImagePath = file.FileName;
-                        coursephotouri =await _storageService.UploadPhoto(file);
-                        
+                        coursephotouri = await _storageService.UploadPhoto(file);
+
                     }
 
                     c.CourseTitle = model.CourseViewModel.CourseTitle;
                     c.CourseContent = model.CourseViewModel.CourseContent;
                     c.Description = model.CourseViewModel.Description;
-                    if (model.CourseViewModel.PaidOrFree == "Paid")
-                    {
-                        c.PaidOrFree = true;
-                        c.Price = model.CourseViewModel.Price;
-                    }
-                    else if (model.CourseViewModel.PaidOrFree == "Free")
-                    {
-                        c.PaidOrFree = false;
-                        c.Price = 0;
-                    }
 
-                    foreach (var category in _categoryService.GetAll())
-                    {
-                        if (category.CategoryName == model.CourseViewModel.CategoryName)
-                        {
-                            c.Category = category;
-                            c.CategoryId = category.CategoryId;
-                        }
-                    }
-
-                    foreach (var subCategory in _subCategoryService.GetAll())
-                    {
-                        if (subCategory.SubCategoryName == model.CourseViewModel.SubCategoryName)
-                        {
-                            c.SubCategory = subCategory;
-                            c.SubCategoryId = subCategory.SubCategoryId;
-                        }
-                    }
+                    c.PaidOrFree = true;
+                    c.Price = model.CourseViewModel.Price;
 
 
-                    foreach (var topic in _topicService.GetAll())
-                    {
-                        if (topic.TopicName == model.CourseViewModel.TopicName)
-                        {
-                            c.Topic = topic;
-                            c.TopicId = topic.TopicId;
-                        }
-                    }
 
-                    c.ObjectivesAndOutcomes = new List<ObjectiveAndOutcomes>
-                {
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
 
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                    new ObjectiveAndOutcomes
-                    {
-                        Content="Nicat get de qardasimsan"
-                    },
-                };
+                    c.Category = category;
+                    c.CategoryId = category.CategoryId;
+
+                    c.SubCategory = subcategory;
+                    c.SubCategoryId = subcategory.SubCategoryId;
+
+
+
+
+                    c.Topic = topic;
+                    c.TopicId = topic.TopicId;
+
+
+                    c.ObjectivesAndOutcomes = objectives;
+                    c.Requirements = requirements;
 
                     c.CourseVideos = new List<Video>
                 {
@@ -288,6 +219,7 @@ namespace Udemy.WebUI.Controllers
 
                     c.Teacher = teacher;
                     c.TeacherId = teacher.TeacherId;
+                    _courseService.Add(c);
                 }
             }
             return RedirectToAction("Home", "Index");
