@@ -130,8 +130,8 @@ namespace Udemy.WebUI.Controllers
                     Course c = new Course();
                     if (file != null)
                     {
-                        c.ImageUrl = file.FileName;
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Image", file.FileName);
+                        
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
 
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
@@ -139,7 +139,7 @@ namespace Udemy.WebUI.Controllers
                         }
                         model.CourseViewModel.ImagePath = file.FileName;
                         coursephotouri = await _storageService.UploadPhoto(file);
-
+                        c.ImageUrl = coursephotouri.ToString();
                     }
 
                     c.CourseTitle = model.CourseViewModel.CourseTitle;
@@ -222,7 +222,7 @@ namespace Udemy.WebUI.Controllers
                     _courseService.Add(c);
                 }
             }
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Instructor");
         }
 
 

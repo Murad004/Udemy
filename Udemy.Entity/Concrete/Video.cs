@@ -10,5 +10,7 @@ namespace Udemy.Entity.Concrete
     {
         public int VideoId { get; set; }
         public string Url { get; set; }
+
+        public Course Course { get; set; }
     }
 }

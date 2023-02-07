@@ -10,5 +10,6 @@ namespace Udemy.Entity.Concrete
     {
         public int RequirementId { get; set; }
         public string Content { get; set; }
+        public Course Course { get; set; }
     }
 }

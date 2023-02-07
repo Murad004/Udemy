@@ -36,6 +36,22 @@ namespace Udemy.DataAccess.Concrete.EntityFramework
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+            
+            //modelBuilder.Entity<ObjectiveAndOutcomes>().HasOne(a => a.Course).WithMany(b => b.ObjectivesAndOutcomes);
+            //modelBuilder.Entity<Requirement>().HasOne(a => a.Course).WithMany(b => b.Requirements);
+            //modelBuilder.Entity<Video>().HasOne(a => a.Course).WithMany(b => b.CourseVideos);
+            //modelBuilder.Entity<Comment>().HasOne(a => a.Course).WithMany(b => b.CourseComments);
+            //modelBuilder.Entity<SubCategory>().HasOne(a => a.Category).WithMany(b => b.SubCategories);
+            //modelBuilder.Entity<Topic>().HasOne(a => a.SubCategory).WithMany(b => b.Topics);
+
+            modelBuilder.Entity<SubCategory>().HasOne(p => p.Category).WithMany(b => b.SubCategories)
+    .HasForeignKey(p => p.SubCategoryId)
+    .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Topic>().HasOne(p => p.SubCategory).WithMany(b => b.Topics)
+    .HasForeignKey(p => p.TopicId)
+    .OnDelete(DeleteBehavior.Cascade);
+
 
             base.OnModelCreating(modelBuilder);
 

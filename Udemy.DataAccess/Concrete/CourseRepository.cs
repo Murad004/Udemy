@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Udemy.DataAccess.Concrete
 
         public void Delete(Course entity)
         {
-            _context.Remove(entity);
+            _context.Entry(entity).State = EntityState.Deleted;
             _context.SaveChanges();
         }
 
