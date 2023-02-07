@@ -118,9 +118,9 @@ namespace Udemy.WebUI.Controllers
             var userId = httpContextAccessor.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
 
-            var category = _categoryService.GetById(1);
-            var subcategory = _subCategoryService.GetById(1);
-            var topic = _topicService.GetById(1);
+            var category = _categoryService.GetById(ClassHelper.SelectedCategoryId);
+            var subcategory = _subCategoryService.GetById(ClassHelper.SelectedSubCategoryId);
+            var topic = _topicService.GetById(model.CourseViewModel.TopicId);
 
             foreach (var teacher in _teacherService.GetAll())
             {
@@ -167,6 +167,9 @@ namespace Udemy.WebUI.Controllers
 
                     c.ObjectivesAndOutcomes = objectives;
                     c.Requirements = requirements;
+
+
+                    //kndhvsghvxcsgvcxsahcjsbacskjsn jn hwbuhww
 
                     c.CourseVideos = new List<Video>
                 {
@@ -219,7 +222,7 @@ namespace Udemy.WebUI.Controllers
 
                     c.Teacher = teacher;
                     c.TeacherId = teacher.TeacherId;
-                    _courseService.Add(c);
+                    //_courseService.Add(c);
                 }
             }
             return RedirectToAction("Index", "Instructor");

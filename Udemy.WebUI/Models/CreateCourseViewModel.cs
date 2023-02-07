@@ -11,9 +11,9 @@ namespace Udemy.WebUI.Models
         public string CourseContent { get; set; }
         public string PaidOrFree { get; set; }
         public decimal? Price { get; set; }
-        public string CategoryName { get; set; }
-        public string SubCategoryName { get; set; }
-        public string TopicName { get; set; }
+        public int CategoryId { get; set; }
+        public int SubCategoryId { get; set; }
+        public int TopicId { get; set; }
         public List<ObjectiveAndOutcomes> ObjectiveAndOutcomes { get; set; }
         public List<Video> Videos { get; set; }
     }

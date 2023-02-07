@@ -12,8 +12,8 @@ using Udemy.DataAccess.Concrete.EntityFramework;
 namespace Udemy.DataAccess.Migrations
 {
     [DbContext(typeof(UdemyContext))]
-    [Migration("20230207121408_Init1")]
-    partial class Init1
+    [Migration("20230207134331_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
