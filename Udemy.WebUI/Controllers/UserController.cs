@@ -42,7 +42,7 @@ namespace Udemy.WebUI.Controllers
         [Authorize(Roles = "User,Admin")]
         public IActionResult Index(bool? adminoruser)
         {
-            return View(new UserViewModel { Course = _courseService.GetAll(), Categories = _categoryService.GetAll(), AdminOrUser = adminoruser });
+            return View(new UserViewModel { Courses = _courseService.GetAll(), Categories = _categoryService.GetAll(), AdminOrUser = adminoruser });
         }
 
         [Authorize(Roles = "User,Admin")]

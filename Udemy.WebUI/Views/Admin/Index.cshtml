@@ -1,4 +1,4 @@
-﻿
+﻿@model Udemy.WebUI.Models.AdminViewModel;
 
 
 @{
@@ -13,7 +13,33 @@
 
 
 
+<div class="container mt-5">
 
+    <h1>Saalam Aleykum nvqgvhasbgaxcstgxvbsjtyxcvshjcbcvswgycvswu</h1>
+
+    <ul style="list-style:none;">
+
+            @foreach (var course in Model.Courses)
+            {
+
+
+                <li class="d-inline-block ms-2 mt-2">
+
+                    <div class="card d-inline-block" style="width: 18rem;">
+                        <img src="@course.ImageUrl" class="card-img-top" alt="Course Image">
+                        <hr>
+                        <div class="card-body">
+                            <h5 class="card-title">@course.CourseTitle</h5>
+                            <p class="card-text">@course.CourseContent</p>
+                        </div>
+                        <input type="hidden" asp-for="@Model.CourseDetailsId" value="@course.CourseId">
+                        <a asp-controller="Admin" asp-action="ShowCourseDetails" class="btn w-100 text-center" style="border: radius 0px; background-color:darkviolet;color: white;">Show Course</a>
+                    </div>
+                </li>
+            }
+
+    </ul>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

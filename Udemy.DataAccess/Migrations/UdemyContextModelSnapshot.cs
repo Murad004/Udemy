@@ -22,6 +22,19 @@ namespace Udemy.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Udemy.Entity.Concrete.AdminNotification", b =>
+                {
+                    b.Property<int>("AdminNotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminNotificationId"));
+
+                    b.HasKey("AdminNotificationId");
+
+                    b.ToTable("AdminNotifications");
+                });
+
             modelBuilder.Entity("Udemy.Entity.Concrete.Cart", b =>
                 {
                     b.Property<int>("CartId")
@@ -96,8 +109,13 @@ namespace Udemy.DataAccess.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("SendUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CommentId");
 
@@ -113,6 +131,9 @@ namespace Udemy.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+
+                    b.Property<int?>("AdminNotificationId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -148,7 +169,12 @@ namespace Udemy.DataAccess.Migrations
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isAccepted")
+                        .HasColumnType("bit");
+
                     b.HasKey("CourseId");
+
+                    b.HasIndex("AdminNotificationId");
 
                     b.HasIndex("CategoryId");
 
@@ -159,6 +185,60 @@ namespace Udemy.DataAccess.Migrations
                     b.HasIndex("TopicId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Udemy.Entity.Concrete.CourseNotification", b =>
+                {
+                    b.Property<int>("CourseNotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseNotificationId"));
+
+                    b.Property<int?>("AdminNotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseNotificationId");
+
+                    b.HasIndex("AdminNotificationId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("NotificationId");
+
+                    b.ToTable("CourseNotifications");
+                });
+
+            modelBuilder.Entity("Udemy.Entity.Concrete.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SendUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Udemy.Entity.Concrete.ObjectiveAndOutcomes", b =>
@@ -276,7 +356,19 @@ namespace Udemy.DataAccess.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<string>("LessonOutcomes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LessonTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VideoImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -316,6 +408,11 @@ namespace Udemy.DataAccess.Migrations
 
             modelBuilder.Entity("Udemy.Entity.Concrete.Course", b =>
                 {
+                    b.HasOne("Udemy.Entity.Concrete.AdminNotification", null)
+                        .WithMany("Courses")
+                        .HasForeignKey("AdminNotificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Udemy.Entity.Concrete.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
@@ -347,6 +444,38 @@ namespace Udemy.DataAccess.Migrations
                     b.Navigation("Teacher");
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("Udemy.Entity.Concrete.CourseNotification", b =>
+                {
+                    b.HasOne("Udemy.Entity.Concrete.AdminNotification", null)
+                        .WithMany("CourseNotifications")
+                        .HasForeignKey("AdminNotificationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Udemy.Entity.Concrete.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Udemy.Entity.Concrete.Notification", "Notification")
+                        .WithMany()
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Notification");
+                });
+
+            modelBuilder.Entity("Udemy.Entity.Concrete.Notification", b =>
+                {
+                    b.HasOne("Udemy.Entity.Concrete.Teacher", null)
+                        .WithMany("Notifications")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Udemy.Entity.Concrete.ObjectiveAndOutcomes", b =>
@@ -404,6 +533,13 @@ namespace Udemy.DataAccess.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("Udemy.Entity.Concrete.AdminNotification", b =>
+                {
+                    b.Navigation("CourseNotifications");
+
+                    b.Navigation("Courses");
+                });
+
             modelBuilder.Entity("Udemy.Entity.Concrete.Cart", b =>
                 {
                     b.Navigation("CartItem");
@@ -437,6 +573,8 @@ namespace Udemy.DataAccess.Migrations
             modelBuilder.Entity("Udemy.Entity.Concrete.Teacher", b =>
                 {
                     b.Navigation("MyCourses");
+
+                    b.Navigation("Notifications");
                 });
 
             modelBuilder.Entity("Udemy.Entity.Concrete.Topic", b =>

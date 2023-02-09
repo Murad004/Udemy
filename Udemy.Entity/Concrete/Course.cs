@@ -37,6 +37,7 @@ namespace Udemy.Entity.Concrete
         public ICollection<ObjectiveAndOutcomes> ObjectivesAndOutcomes { get; set; }
         public ICollection<Requirement> Requirements { get; set; }
         public bool PaidOrFree { get; set; }
+        public bool isAccepted { get; set; }
         public decimal? Price { get; set; }
         public ICollection<Video> CourseVideos { get; set; }
         public ICollection<Comment> CourseComments { get; set; }

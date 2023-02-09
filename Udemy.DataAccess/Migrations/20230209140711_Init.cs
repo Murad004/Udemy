@@ -11,6 +11,18 @@ namespace Udemy.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AdminNotifications",
+                columns: table => new
+                {
+                    AdminNotificationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminNotifications", x => x.AdminNotificationId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Carts",
                 columns: table => new
                 {
@@ -72,6 +84,27 @@ namespace Udemy.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SendUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "Teachers",
+                        principalColumn: "TeacherId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Topics",
                 columns: table => new
                 {
@@ -104,11 +137,19 @@ namespace Udemy.DataAccess.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaidOrFree = table.Column<bool>(type: "bit", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                    isAccepted = table.Column<bool>(type: "bit", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AdminNotificationId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.CourseId);
+                    table.ForeignKey(
+                        name: "FK_Courses_AdminNotifications_AdminNotificationId",
+                        column: x => x.AdminNotificationId,
+                        principalTable: "AdminNotifications",
+                        principalColumn: "AdminNotificationId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Courses_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -168,7 +209,8 @@ namespace Udemy.DataAccess.Migrations
                 {
                     CommentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    SendUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -180,6 +222,39 @@ namespace Udemy.DataAccess.Migrations
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CourseNotifications",
+                columns: table => new
+                {
+                    CourseNotificationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    NotificationId = table.Column<int>(type: "int", nullable: false),
+                    AdminNotificationId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseNotifications", x => x.CourseNotificationId);
+                    table.ForeignKey(
+                        name: "FK_CourseNotifications_AdminNotifications_AdminNotificationId",
+                        column: x => x.AdminNotificationId,
+                        principalTable: "AdminNotifications",
+                        principalColumn: "AdminNotificationId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CourseNotifications_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CourseNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -229,7 +304,10 @@ namespace Udemy.DataAccess.Migrations
                 {
                     VideoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    VideoImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LessonTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LessonOutcomes = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -259,6 +337,26 @@ namespace Udemy.DataAccess.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseNotifications_AdminNotificationId",
+                table: "CourseNotifications",
+                column: "AdminNotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseNotifications_CourseId",
+                table: "CourseNotifications",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseNotifications_NotificationId",
+                table: "CourseNotifications",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_AdminNotificationId",
+                table: "Courses",
+                column: "AdminNotificationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Courses_CategoryId",
                 table: "Courses",
                 column: "CategoryId");
@@ -277,6 +375,11 @@ namespace Udemy.DataAccess.Migrations
                 name: "IX_Courses_TopicId",
                 table: "Courses",
                 column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_TeacherId",
+                table: "Notifications",
+                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Objectives_CourseId",
@@ -304,6 +407,9 @@ namespace Udemy.DataAccess.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "CourseNotifications");
+
+            migrationBuilder.DropTable(
                 name: "Objectives");
 
             migrationBuilder.DropTable(
@@ -316,7 +422,13 @@ namespace Udemy.DataAccess.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "AdminNotifications");
 
             migrationBuilder.DropTable(
                 name: "Teachers");

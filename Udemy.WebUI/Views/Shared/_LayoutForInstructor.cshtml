@@ -186,6 +186,14 @@
 
             </ul>
 
+            <div class="col-md-10 w-100">
+                @if (TempData["message"] != null)
+                {
+                    <div class="alert alert-info animate__animated animate__backInLeft" role="alert">@TempData["message"]</div>
+                }
+                @RenderBody()
+            </div>
+
             @RenderBody()
             <div class="d-flex flex-column">
                 <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">

@@ -13,9 +13,8 @@ namespace Udemy.Entity.Concrete
         public string FullName { get; set; }
         public string FieldOfWork { get; set; }
         public string AboutMe { get; set; }
-        public List<Course> MyCourses { get; set; }
+        public ICollection<Course> MyCourses { get; set; }
         public int MyStudentCount { get; set; }
-
-
+        public ICollection<Notification> Notifications { get; set; }
     }
 }

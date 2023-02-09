@@ -19,6 +19,10 @@ builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IVideoRepository, VideoRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IRequirementRepository, RequirementRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<ICourseNotificationRepository, CourseNotificationRepository>();
+builder.Services.AddScoped<IAdminNotificationRepository, AdminNotificationRepository>();
+
 
 builder.Services.AddScoped<ITopicService, TopicManager>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryManager>();
@@ -30,6 +34,12 @@ builder.Services.AddScoped<IVideoService, VideoManager>();
 builder.Services.AddScoped<ITeacherService, TeacherManager>();
 builder.Services.AddScoped<IRequirementService, RequirementManager>();
 builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<INotificationService, NotificationManager>();
+builder.Services.AddScoped<ICourseNotificationService, CourseNotificationManager>();
+builder.Services.AddScoped<IAdminNotificationService, AdminNotificationManager>();
+
+
+
 builder.Services.AddDbContext<UdemyContext>(options => options.UseSqlServer(
 
     @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Udemy;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"

@@ -29,6 +29,9 @@ namespace Udemy.DataAccess.Concrete.EntityFramework
         public DbSet<Requirement> Requirements { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<CourseNotification> CourseNotifications { get; set; }
+        public DbSet<AdminNotification> AdminNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,13 +39,36 @@ namespace Udemy.DataAccess.Concrete.EntityFramework
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-            
+
             //modelBuilder.Entity<ObjectiveAndOutcomes>().HasOne(a => a.Course).WithMany(b => b.ObjectivesAndOutcomes);
             //modelBuilder.Entity<Requirement>().HasOne(a => a.Course).WithMany(b => b.Requirements);
             //modelBuilder.Entity<Video>().HasOne(a => a.Course).WithMany(b => b.CourseVideos);
             //modelBuilder.Entity<Comment>().HasOne(a => a.Course).WithMany(b => b.CourseComments);
             //modelBuilder.Entity<SubCategory>().HasOne(a => a.Category).WithMany(b => b.SubCategories);
             //modelBuilder.Entity<Topic>().HasOne(a => a.SubCategory).WithMany(b => b.Topics);
+
+
+            //modelBuilder.Entity<Category>().HasData(new Category
+            //{
+            //    CategoryName = "Development"
+            //},new Category
+            //{
+            //    CategoryName="Design"
+            //});
+
+
+
+            //modelBuilder.Entity<SubCategory>().HasData(new SubCategory
+            //{
+                
+            //    Category = 1,
+            //    SubCategoryName = "Web Development"
+            //},
+            //new SubCategory
+            //{
+            //    CategoryId=2,
+            //    SubCategoryName="Web Design"
+            //});
 
             modelBuilder.Entity<SubCategory>().HasOne(p => p.Category).WithMany(b => b.SubCategories)
     .HasForeignKey(p => p.SubCategoryId)
@@ -51,6 +77,9 @@ namespace Udemy.DataAccess.Concrete.EntityFramework
             modelBuilder.Entity<Topic>().HasOne(p => p.SubCategory).WithMany(b => b.Topics)
     .HasForeignKey(p => p.TopicId)
     .OnDelete(DeleteBehavior.Cascade);
+
+
+            
 
 
             base.OnModelCreating(modelBuilder);

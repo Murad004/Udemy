@@ -29,6 +29,10 @@ namespace Udemy.WebUI.Controllers
         private ISubCategoryService _subCategoryService;
         private ITopicService _topicService;
         private ITeacherService _teacherService;
+        private INotificationService _notificationService;
+        private ICourseNotificationService _courseNotificationService;
+        private IAdminNotificationService _adminNotificationService;
+
         private int selectedcategoryid;
         private IHttpContextAccessor httpContextAccessor;
         private IWebHostEnvironment webHost;
@@ -37,7 +41,7 @@ namespace Udemy.WebUI.Controllers
         private readonly IConfiguration _configuration;
         Uri coursephotouri = null;
 
-        public InstructorController(UserManager<User> userManager, ICourseService courseService, IVideoService videoService, ISubCategoryService subCategoryService, ITopicService topicService, ICategoryService categoryService, IWebHostEnvironment webHost, IHttpContextAccessor httpContextAccessor, ITeacherService teacherService, IStorageService storageService, IConfiguration configuration)
+        public InstructorController(UserManager<User> userManager, ICourseService courseService, IVideoService videoService, ISubCategoryService subCategoryService, ITopicService topicService, ICategoryService categoryService, IWebHostEnvironment webHost, IHttpContextAccessor httpContextAccessor, ITeacherService teacherService, IStorageService storageService, IConfiguration configuration, INotificationService notificationService, ICourseNotificationService courseNotificationService, IAdminNotificationService adminNotificationService)
         {
             _userManager = userManager;
             _courseService = courseService;
@@ -50,6 +54,9 @@ namespace Udemy.WebUI.Controllers
             _teacherService = teacherService;
             _storageService = storageService;
             _configuration = configuration;
+            _notificationService = notificationService;
+            _courseNotificationService = courseNotificationService;
+            _adminNotificationService = adminNotificationService;
         }
 
         private async Task<User> GetCurrentUser()
@@ -137,8 +144,9 @@ namespace Udemy.WebUI.Controllers
                         {
                             await file.CopyToAsync(stream);
                         }
-                        model.CourseViewModel.ImagePath = file.FileName;
+                        model.CourseViewModel.ImagePath = "~/Images/" + file.FileName;
                         coursephotouri = await _storageService.UploadPhoto(file);
+                        TempData.Add("Image", coursephotouri.ToString());
                         c.ImageUrl = coursephotouri.ToString();
                     }
 
@@ -175,54 +183,88 @@ namespace Udemy.WebUI.Controllers
                 {
                     new Video
                     {
-                        Url="ASDFGHJKL"
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
                     },
                     new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
+                    },new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
+                    },new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
+                    },new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
+                    },new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
+                    },new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
+                    },new Video
                     {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
-                    {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
-                    {
-                        Url="ASDFGHJKL"
-                    },
-                    new Video
-                    {
-                        Url="ASDFGHJKL"
+                        LessonTitle="ders",
+                        LessonOutcomes="Identity",
+                        Url="ASDFGHJKL",
+                        VideoImageUrl="asdfghjk"
                     }
                 };
 
 
                     c.Teacher = teacher;
                     c.TeacherId = teacher.TeacherId;
-                    //_courseService.Add(c);
+
+                    c.isAccepted = false;
+
+                    var n = new Notification
+                    {
+                        SendUserId = user.Id,
+                        Content = "New Course"
+                    };
+
+
+                    var cn = new CourseNotification
+                    {
+                        Notification = n,
+                        Course = c
+                    };
+
+
+                    AdminNotification an = new AdminNotification();
+
+                    an.CourseNotifications.Add(cn);
+                    an.Courses.Add(cn.Course);
+
+
+                    _courseService.Add(c);
+                    _notificationService.Add(n);
+                    _courseNotificationService.Add(cn);
+                    _adminNotificationService.Add(an);
+                    TempData.Add("message", "Course was sended to Admin! Please wait for Admin answer . . .");
+
                 }
             }
             return RedirectToAction("Index", "Instructor");

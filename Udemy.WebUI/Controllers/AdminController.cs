@@ -18,21 +18,73 @@ namespace Udemy.WebUI.Controllers
         private ICategoryService _categoryService;
         private ISubCategoryService _subCategoryService;
         private ITopicService _topicService;
-
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, ICategoryService categoryService, ISubCategoryService subCategoryService, ITopicService topicService)
+        private ICourseNotificationService _courseNotificationService;
+        private IAdminNotificationService _adminNotificationService;
+        private ICourseService _courseService;
+        private ITeacherService _teacherService;
+        private IObjectiveService _objectiveService;
+        private IRequirementService _requirementService;
+        private IVideoService _videoService;
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, ICategoryService categoryService, ISubCategoryService subCategoryService, ITopicService topicService, ICourseNotificationService courseNotificationService, IAdminNotificationService adminNotificationService, ICourseService courseService, ITeacherService teacherService, IObjectiveService objectiveService, IRequirementService requirementService, IVideoService videoService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _categoryService = categoryService;
             _subCategoryService = subCategoryService;
             _topicService = topicService;
+            _courseNotificationService = courseNotificationService;
+            _adminNotificationService = adminNotificationService;
+            _courseService = courseService;
+            _teacherService = teacherService;
+            _objectiveService = objectiveService;
+            _requirementService = requirementService;
+            _videoService = videoService;
         }
 
 
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            return View(new AdminViewModel { Categories = _categoryService.GetAll() });
+            return View(new AdminViewModel { Categories = _categoryService.GetAll(), AdminNotifications = _adminNotificationService.GetAll(), Courses = _courseService.GetAll().Where(c => c.isAccepted == false).ToList() });
+        }
+
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult ShowCourseDetails()
+        {
+            return View(new AdminViewModel {  AdminNotifications=_adminNotificationService.GetAll(),
+                Courses=_courseService.GetAll(),
+                Categories=_categoryService.GetAll(),
+                SubCategories=_subCategoryService.GetAll(),
+                Topics=_topicService.GetAll(),
+                Teachers=_teacherService.GetAll(),
+                ObjectiveAndOutcomes=_objectiveService.GetAll(),
+                Requirements=_requirementService.GetAll(),
+                Videos=_videoService.GetAll()});
+        }
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult AcceptedCourse(int AcceptedANId,int AcceptedCourseId)
+        {
+            var an = _adminNotificationService.GetById(AcceptedANId);
+
+            foreach(var course in an.Courses)
+            {
+                if (course.CourseId == AcceptedCourseId)
+                {
+                    an.Courses.Remove(course);
+                    foreach(var cn in _courseNotificationService.GetAll())
+                    {
+                        if(cn.Course.CourseId == AcceptedCourseId)
+                        {
+                            _courseNotificationService.Delete(cn);
+                        }
+                    }
+                    _courseService.Add(course);
+                }
+            }
+            
+            return RedirectToAction("Index", "Admin");
         }
 
         [Authorize(Roles = "Admin")]
