@@ -132,9 +132,6 @@ namespace Udemy.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
 
-                    b.Property<int?>("AdminNotificationId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -174,8 +171,6 @@ namespace Udemy.DataAccess.Migrations
 
                     b.HasKey("CourseId");
 
-                    b.HasIndex("AdminNotificationId");
-
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("SubCategoryId");
@@ -195,9 +190,6 @@ namespace Udemy.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseNotificationId"));
 
-                    b.Property<int?>("AdminNotificationId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
@@ -205,8 +197,6 @@ namespace Udemy.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CourseNotificationId");
-
-                    b.HasIndex("AdminNotificationId");
 
                     b.HasIndex("CourseId");
 
@@ -408,11 +398,6 @@ namespace Udemy.DataAccess.Migrations
 
             modelBuilder.Entity("Udemy.Entity.Concrete.Course", b =>
                 {
-                    b.HasOne("Udemy.Entity.Concrete.AdminNotification", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("AdminNotificationId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Udemy.Entity.Concrete.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
@@ -448,11 +433,6 @@ namespace Udemy.DataAccess.Migrations
 
             modelBuilder.Entity("Udemy.Entity.Concrete.CourseNotification", b =>
                 {
-                    b.HasOne("Udemy.Entity.Concrete.AdminNotification", null)
-                        .WithMany("CourseNotifications")
-                        .HasForeignKey("AdminNotificationId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Udemy.Entity.Concrete.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
@@ -531,13 +511,6 @@ namespace Udemy.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("Udemy.Entity.Concrete.AdminNotification", b =>
-                {
-                    b.Navigation("CourseNotifications");
-
-                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("Udemy.Entity.Concrete.Cart", b =>

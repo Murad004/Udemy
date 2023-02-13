@@ -138,18 +138,11 @@ namespace Udemy.DataAccess.Migrations
                     CourseContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PaidOrFree = table.Column<bool>(type: "bit", nullable: false),
                     isAccepted = table.Column<bool>(type: "bit", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    AdminNotificationId = table.Column<int>(type: "int", nullable: true)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.CourseId);
-                    table.ForeignKey(
-                        name: "FK_Courses_AdminNotifications_AdminNotificationId",
-                        column: x => x.AdminNotificationId,
-                        principalTable: "AdminNotifications",
-                        principalColumn: "AdminNotificationId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Courses_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -232,18 +225,11 @@ namespace Udemy.DataAccess.Migrations
                     CourseNotificationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    NotificationId = table.Column<int>(type: "int", nullable: false),
-                    AdminNotificationId = table.Column<int>(type: "int", nullable: true)
+                    NotificationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CourseNotifications", x => x.CourseNotificationId);
-                    table.ForeignKey(
-                        name: "FK_CourseNotifications_AdminNotifications_AdminNotificationId",
-                        column: x => x.AdminNotificationId,
-                        principalTable: "AdminNotifications",
-                        principalColumn: "AdminNotificationId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CourseNotifications_Courses_CourseId",
                         column: x => x.CourseId,
@@ -337,11 +323,6 @@ namespace Udemy.DataAccess.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseNotifications_AdminNotificationId",
-                table: "CourseNotifications",
-                column: "AdminNotificationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CourseNotifications_CourseId",
                 table: "CourseNotifications",
                 column: "CourseId");
@@ -350,11 +331,6 @@ namespace Udemy.DataAccess.Migrations
                 name: "IX_CourseNotifications_NotificationId",
                 table: "CourseNotifications",
                 column: "NotificationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Courses_AdminNotificationId",
-                table: "Courses",
-                column: "AdminNotificationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courses_CategoryId",
@@ -401,6 +377,9 @@ namespace Udemy.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AdminNotifications");
+
+            migrationBuilder.DropTable(
                 name: "CartItems");
 
             migrationBuilder.DropTable(
@@ -426,9 +405,6 @@ namespace Udemy.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Courses");
-
-            migrationBuilder.DropTable(
-                name: "AdminNotifications");
 
             migrationBuilder.DropTable(
                 name: "Teachers");

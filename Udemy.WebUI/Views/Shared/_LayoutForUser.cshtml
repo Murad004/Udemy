@@ -14,16 +14,12 @@
     <style>
         a {
             font-size: 14px;
-            font-weight: 700
+            font-weight: 500
         }
 
         /*.superNav {
-                                                                                                                                                                                                                                                                                                            font-size: 13px;
-                                                                                                                                                                                                                                                                                                        }*/
-        .dropdown-menu {
-            margin-right: 170px;
-            margin-top: 5px;
-        }
+                                                                                                                                                    font-size: 13px;
+                                                                                                                                                }*/
 
         .form-control {
             outline: none !important;
@@ -41,6 +37,39 @@
             width: 100% !important;
         }
 
+
+        .Login {
+            color: black;
+            background-color: transparent;
+            border: 1px solid darkviolet;
+            border-radius: 5px;
+            transition: 0.2s;
+        }
+
+
+            .Login:hover {
+                color: white;
+                background-color: darkviolet;
+                transition: 0.2s;
+            }
+
+
+        .SearchBtn {
+            background-color: darkviolet;
+            border: 1px solid darkviolet;
+            color: white;
+            border-radius: 8px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+            transition: 0.1s;
+        }
+
+            .SearchBtn:hover {
+                color: black;
+                background-color: transparent;
+                transition: 0.1s;
+            }
+
         footer {
             position: fixed;
             left: 0;
@@ -48,9 +77,6 @@
             width: 100%;
         }
 
-        .offcanvas {
-            width: 300px;
-        }
 
         .drpmenu {
             width: 250px;
@@ -65,8 +91,6 @@
             color: black;
             margin-top: 5px;
         }
-
-
 
             .drpitems1 > a:hover {
                 background-color: white;
@@ -99,265 +123,157 @@
             .drpheader > h1:hover {
                 color: darkviolet;
             }
+
+           
     </style>
 </head>
 <body>
+
+
     <div>
-        <nav class="navbar navbar-expand-xl navbar-light bg-light sticky-top">
-            <button class="navbar-toggler ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavOffCanvas" aria-controls="navbarNavOffCanvas" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand mx-auto d-sm-block ms-xl-4" href="/User/Index"><img src="~/Images/Udemy_logo.svg.png" height="38" alt="CoolBrand"> </a>
-            <div class="me-3 d-xl-none d-md-block d-xs-block">
-                @*<div class="input-group">
-                <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" class="form-control border-dark" style="color:#7a7a7a">
-                <button class="btn btn-dark text-white">Search</button>
-                </div>*@
-                <a href="#searchBox" data-bs-toggle="collapse"><i class="fa-solid fa-magnifying-glass fa-lg"></i></a>
-
-            </div>
-
-
-
-            <div class="offcanvas offcanvas-start ms-auto" tabindex="-1" id="navbarNavOffCanvas" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    @*<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Dark offcanvas</h5>*@
-                    <ul class="navbar-nav ms-3 flex-grow-1 pe-3">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item dropdown ms-2 d-block d-xl-none">
-
-                                <a href="#" class="nav-link border-0 bg-transparent" data-bs-toggle="dropdown"><img height="20" width="20" src="~/Images/47774.png" /></a>
-
-                            </li>
-                            <li class="nav-item d-block d-xl-none">
-                                <a class="nav-link mx-2 fs-3 fw-bold" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
-                            </li>
-
-                        }
-                        else
-                        {
-
-                            <li class="nav-item ms-2 d-block d-xl-none">
-                                <a class="nav-link mx-2 border border-dark" asp-controller="Account" asp-action="Login">Sign In</a>
-                            </li>
-                            <li class="nav-item ms-2 d-block d-xl-none">
-                                <a class="nav-link mx-2 ms-1 border" style="background-color:black;color:white;" asp-controller="Account" asp-action="Register">Sign Up</a>
-                            </li>
-                        }
-                    </ul>
-                    <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <nav class="navbar navbar-expand-xl navbar-light bg-light">
+            <div class="container-fluid">
+                <button class="navbar-toggler ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavOffCanvas" aria-controls="navbarNavOffCanvas" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand mx-auto d-sm-block ms-xl-4" href="/Home/Index"><img src="~/Images/Udemy_logo.svg.png" height="38" alt="CoolBrand"> </a>
+                <div class="me-3 d-block d-xl-none">
+                    <a class="d-xl-none" href="#searchBox" data-bs-toggle="collapse"><i class="fa-solid fa-magnifying-glass fa-lg"></i></a>
                 </div>
-                <hr class="d-xl-none" />
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav ms-3 flex-grow-1 pe-3">
 
-
-                        <li class="nav-item dropdown ms-4 d-none d-xl-block">
-                            <a class="nav-link dropdown border-0 bg-transparent" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                Categories
-                            </a>
-                            <ul class="dropdown-menu">
-                                @foreach (var category in Model.Categories)
+                <div class="collapse navbar-collapse d-none d-xl-block" id="navbarNavDropdown">
+                    <ul class="navbar-nav ms-auto ">
+                        <li class="nav-item dropdown me-5">
+                            <a class="nav-link dropdown-toggle" id="drop" role="button" data-bs-toggle="dropdown">Categories</a>
+                            <div class="dropdown-menu me-3 mt-1" style="margin-left:-18px;border:1px solid darkviolet;" aria-labelledby="drop">
+                                @foreach (var item in Model.Categories)
                                 {
-
-                                    <li class="catli"> <a class="dropdown-item" href="#">@category.CategoryName</a>  </li>
+                                    <a class="dropdown-item" style="color:darkviolet;" href="#">@item.CategoryName</a>
                                 }
-                            </ul>
+
+                            </div>
+
+
                         </li>
 
-
-
-                        <li class="nav-item ms-5">
-                            <div class="ms-auto d-none d-xl-block">
-                                <div class="input-group">
-                                    <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                    <input type="text" class="form-control border-dark" style="color:#7a7a7a;width:830px;">
-                                    <button class=" btn btn-dark text-white">Search</button>
-                                </div>
+                        <li class="nav-item ms-1">
+                            <div class="input-group">
+                                <span class="input-group-text text-white" style="border:1px solid darkviolet;border-radius:8px;border-bottom-right-radius:0px;border-top-right-radius:0px; background-color:darkviolet;"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                <input type="text" class="form-control" style="color:#7a7a7a;border:1px solid darkviolet;border-radius:8px;border-bottom-right-radius:0px;border-top-right-radius:0px;border-bottom-left-radius:0px;border-top-left-radius:0px;width:590px;">
+                                <button class="SearchBtn btn">Search</button>
                             </div>
                         </li>
-
-
-
-
-
-
-
-
-
-
-                    </ul>
-                    <ul class="nav navbar-nav ms-auto">
 
                         <li class="nav-item">
                             <a class="nav-link mx-2" href="#">Udemy Business</a>
                         </li>
-
-                        <form asp-controller="User" asp-action="AddTeacherAccount" method="post">
-
-                        <li class="nav-item me-5">
-                            <a class="nav-link mx-2" asp-controller="User" asp-action="AddTeacherAccount">Teach on Udemy</a>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="#">Tech on Udemy</a>
                         </li>
-
-                        </form>
-                        <hr class="d-lg-none" />
-                        <li class="nav-item me-3 d-none d-xl-block">
+                    </ul>
+                    <ul class="navbar-nav ms-auto ">
+                        <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fa-solid fa-heart fa-lg" style="margin-top:12px;"></i></a>
                         </li>
 
-                        <li class="nav-item me-3 d-none d-xl-block">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping fa-lg" style="margin-top:12px;"></i></a>
-                        </li>
-
-                        <li class="nav-i me-3 d-none d-xl-block">
+                        <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fa-solid fa-bell fa-lg" style="margin-top:12px;"></i></a>
                         </li>
-
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link mx-2" href="/Instructor/Index">Instructor Dashboard</a>
-                            <a class="nav-link mx-2" href="#">Your Card</a>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2" href="#"><i class="fa-solid fa-cart-shopping fa-lg" style="margin-top:12px;"></i></a>
                         </li>
+                        <li class="nav-item dropdown d-none d-lg-block">
 
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link mx-2" href="#">Wishlist</a>
-                        </li>
-                        <hr class="d-lg-none" />
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link mx-2" href="#">Notification</a>
-                        </li>
-                        <hr class="d-lg-none" />
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link mx-2" asp-controller="Account" asp-action="Logout">LogOut</a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-
-
-
-                            <li class="nav-item dropdown me-5 d-none d-xl-block">
-
-                                <a href="#" class="nav-link dropdown border-0 bg-transparent" data-bs-toggle="dropdown"><img height="20" width="20" src="~/Images/47774.png" /></a>
-                                <div class="dropdown-menu drpmenu">
-
-                                    <div class="drpheader dropdown-item">
-                                        <img src="~/Images/47774.png" width="30px" height="30px">
-                                        <h1>@User.Identity.Name</h1>
-                                    </div>
-                                    <hr>
-                                    <div class="drpitems1" style="background-color:white;">
-                                        <a class="dropdown-item" href="#">My Learning</a>
-                                        <a class="dropdown-item" href="#">My Card</a>
-                                        <a class="dropdown-item" href="#">Wishlist</a>
-                                        <a class="dropdown-item" href="">Instructor</a>
-                                        <hr>
-                                        <a class="dropdown-item" href="#">Notification</a>
-                                        <a class="dropdown-item" href="#">Messages</a>
-                                        <hr>
-                                        <a class="dropdown-item" href="#">Account Settings</a>
-                                        <a class="dropdown-item" href="#">Edit Profile</a>
-                                        <hr>
-                                        <a class="dropdown-item" href="#">Help</a>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">Log Out</a>
-
-
-                                    </div>
-
+                            <a href="#" class="nav-link dropdown border-0 bg-transparent" data-bs-toggle="dropdown"><img height="20" width="20" src="~/Images/47774.png" /></a>
+                            <div class="dropdown-menu drpmenu">
+                                <div class="drpheader dropdown-item">
+                                    <img src="~/Images/47774.png" width="30px" height="30px">
+                                    <h1>@User.Identity.Name</h1>
                                 </div>
-                            </li>
-
-
-
-
-                        }
-                        else
-                        {
-
-                            <li class="nav-item ms-2 d-none d-lg-block">
-                                <a class="nav-link mx-2 border border-dark" asp-controller="Account" asp-action="Login">Sign In</a>
-                            </li>
-                            <li class="nav-item ms-2 d-none d-lg-block">
-                                <a class="nav-link mx-2 ms-1 border" style="background-color:black;color:white;" asp-controller="Account" asp-action="Register">Sign Up</a>
-                            </li>
-                        }
+                                <hr>
+                                <div class="drpitems1" style="background-color:white;">
+                                    <a class="dropdown-item" href="#">My Learning</a>
+                                    <a class="dropdown-item" href="#">My Card</a>
+                                    <a class="dropdown-item" href="#">Wishlist</a>
+                                    <a class="dropdown-item" href="">Instructor</a>
+                                    <hr>
+                                    <a class="dropdown-item" href="#">Notification</a>
+                                    <a class="dropdown-item" href="#">Messages</a>
+                                    <hr>
+                                    <a class="dropdown-item" href="#">Account Settings</a>
+                                    <a class="dropdown-item" href="#">Edit Profile</a>
+                                    <hr>
+                                    <a class="dropdown-item" href="#">Help</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">Log Out</a>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
+
+
+
+                <div class="offcanvas offcanvas-start ms-auto d-xl-none w-75" tabindex="-1" id="navbarNavOffCanvas" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <ul class="navbar-nav ms-1 flex-grow-1 pe-3">
+                            <li class="nav-item ms-2">
+                                <a class="nav-link mx-2" style="color:darkviolet;font-size:1.3em;" asp-controller="Account" asp-action="Login">Sign In</a>
+                            </li>
+                            <li class="nav-item ms-2">
+                                <a class="nav-link mx-2" style="color:darkviolet;font-size:1.3em;" asp-controller="Account" asp-action="Register">Sign Up</a>
+                            </li>
+                        </ul>
+                        <button type="button" style="color:darkviolet;" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <hr class="d-md-none" />
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav ms-1 flex-grow-1 pe-3">
+
+                            <li class="nav-item">
+                                <a class="nav-link mx-2" style="font-weight:bold;font-size:1.5em;color:darkviolet;">Course Categories</a>
+                            </li>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link mx-2" style="font-weight:bold;font-size:1.2em;letter-spacing:1px;">@category.CategoryName</a>
+                                </li>
+                            }
+
+                            <hr class="d-md-none" />
+                            <li class="nav-item">
+                                <a class="nav-link mx-2" style="font-weight:bold;font-size:1.5em;color:darkviolet;">More From Udemy</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link mx-2" style="font-size:1.2em;" asp-controller="Account" asp-action="Login">Your Card</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link mx-2" style="font-size:1.2em;" asp-controller="Account" asp-action="Login">Udemy Business</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link mx-2" style="font-size:1.2em;" asp-controller="Account" asp-action="Login">Tech on Udemy</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link mx-2" style="font-size:1.2em;font-weight:bold;" asp-controller="Account" asp-action="Login">Help</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
 
-
-
-
-            @*<div class=" collapse navbar-collapse" id="navbarNavDropdown">
-            <div class="ms-auto d-none d-lg-block">
-            <div class="input-group">
-            <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="form-control border-dark" style="color:#7a7a7a;width:400px;">
-            <button class=" btn btn-dark text-white">Search</button>
-            </div>
-            </div>
-            <ul class="navbar-nav ms-auto ">
-            <li class="nav-item dropdown me-lg-3">
-            <a class="nav-link dropdown-toggle ms-2" id="drop" role="button" data-bs-toggle="dropdown">Categories</a>
-            <div class="dropdown-menu ms-0" aria-labelledby="drop">
-            @foreach (var item in Model.Categories)
-            {
-            <a class="dropdown-item" href="#">@item.CategoryName</a>
-            }
-
-            </div>
-
-
-            </li>
-
-            <li class="nav-item">
-            <a class="nav-link mx-2" href="#">Udemy Business</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link mx-2" href="#">Tech on Udemy</a>
-            </li>
-            </ul>
-            <ul class="navbar-nav ms-auto ">
-            <li class="nav-item">
-            <a class="nav-link mx-2" href="#"><i class="fa-solid fa-cart-shopping fa-lg" style="margin-top:12px;"></i></a>
-            </li>
-            @if (User.Identity.IsAuthenticated)
-            {
-            <li class="nav-item">
-            <a class="nav-link mx-2" asp-controller="Account" asp-action="Manage">@User.Identity.Name</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link mx-2 ms-1" asp-controller="Account" asp-action="LogOut">LogOut</a>
-            </li>
-            }
-            else
-            {
-
-            <li class="nav-item">
-            <a class="nav-link mx-2" asp-controller="Account" asp-action="Login">Login</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link mx-2 ms-1" asp-controller="Account" asp-action="Register">Register</a>
-            </li>
-            }
-            </ul>
-            </div>*@
-            <div id="searchBox" class="input-group collapse">
-                <span class="border-dark input-group-text bg-dark text-white"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" class="form-control border-dark" style="color:#7a7a7a">
-                <button class="btn btn-dark text-white">Search</button>
-            </div>
         </nav>
-        
-        @RenderBody()
-        @*<div class="d-flex flex-column">
-        <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
-        <div class="container text-center">
-        <small>Copyright &copy; Udemy</small>
+        <div id="searchBox" class="input-group collapse">
+            <span class="input-group-text text-dark" style="background-color:darkviolet;border:1px solid darkviolet;"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="form-control" style="color:#7a7a7a;border:1px solid darkviolet;">
+            <button class="btn text-dark" style="background-color:darkviolet;">Search</button>
         </div>
-        </footer>
-        </div>*@
+        @RenderBody()
     </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -367,3 +283,39 @@
 
 </body>
 </html>
+
+
+
+
+
+
+@*<li class="nav-item dropdown me-5 d-none d-xl-block">
+
+    <a href="#" class="nav-link dropdown border-0 bg-transparent" data-bs-toggle="dropdown"><img height="20" width="20" src="~/Images/47774.png" /></a>
+    <div class="dropdown-menu drpmenu">
+
+        <div class="drpheader dropdown-item">
+            <img src="~/Images/47774.png" width="30px" height="30px">
+            <h1>@User.Identity.Name</h1>
+        </div>
+        <hr>
+        <div class="drpitems1" style="background-color:white;">
+            <a class="dropdown-item" href="#">My Learning</a>
+            <a class="dropdown-item" href="#">My Card</a>
+            <a class="dropdown-item" href="#">Wishlist</a>
+            <a class="dropdown-item" href="">Instructor</a>
+            <hr>
+            <a class="dropdown-item" href="#">Notification</a>
+            <a class="dropdown-item" href="#">Messages</a>
+            <hr>
+            <a class="dropdown-item" href="#">Account Settings</a>
+            <a class="dropdown-item" href="#">Edit Profile</a>
+            <hr>
+            <a class="dropdown-item" href="#">Help</a>
+            <a class="dropdown-item" asp-controller="Account" asp-action="LogOut">Log Out</a>
+
+
+        </div>
+
+    </div>
+</li>*@
