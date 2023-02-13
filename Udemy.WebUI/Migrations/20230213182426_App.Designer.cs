@@ -12,8 +12,8 @@ using Udemy.WebUI.Identity;
 namespace Udemy.WebUI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230213155810_App2")]
-    partial class App2
+    [Migration("20230213182426_App")]
+    partial class App
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

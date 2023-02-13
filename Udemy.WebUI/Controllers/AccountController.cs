@@ -94,7 +94,6 @@ namespace Udemy.WebUI.Controllers
             {
                 return View(model);
             }
-
             if (file != null)
             {
 
@@ -105,8 +104,6 @@ namespace Udemy.WebUI.Controllers
                     await file.CopyToAsync(stream);
                 }
                 coursephotouri = await _storageService.UploadPhoto(file);
-                TempData.Add("Image", coursephotouri.ToString());
-                model.ImageUrl = coursephotouri.ToString();
             }
 
             var user = new User()
@@ -116,7 +113,7 @@ namespace Udemy.WebUI.Controllers
                 LastName = model.LastName,
                 UserName = model.UserName,
                 Email = model.Email,
-                ImageUrl=model.ImageUrl
+                ImageUrl=coursephotouri.ToString()
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
