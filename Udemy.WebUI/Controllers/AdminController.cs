@@ -294,5 +294,16 @@ namespace Udemy.WebUI.Controllers
 
 
 
+
+        //Manafer Processes
+
+
+        public IActionResult GetAllUser()
+        {
+            return View(new AdminViewModel { Users = _userManager.Users.ToList(),Courses=_courseService.GetAll()});
+        }
+
+
+
     }
 }

@@ -1,5 +1,7 @@
-﻿using Udemy.Business.Abstract;
+﻿using Microsoft.AspNetCore.Identity;
+using Udemy.Business.Abstract;
 using Udemy.Entity.Concrete;
+using Udemy.WebUI.Identity;
 
 namespace Udemy.WebUI.Models
 {
@@ -13,6 +15,8 @@ namespace Udemy.WebUI.Models
         public List<ObjectiveAndOutcomes> ObjectiveAndOutcomes { get; set; }
         public List<Requirement> Requirements { get; set; }
         public List<Video> Videos { get; set; }
+
+        public List<User> Users { get; set; }
 
     }
 }

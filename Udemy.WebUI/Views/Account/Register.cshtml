@@ -29,7 +29,9 @@
 </style>
 
 
-<div class="container py-5 h-100">
+
+
+<div id="InputsId" class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
             <div class="card bg-white text-dark" style="border:1px solid darkviolet;">
@@ -41,6 +43,10 @@
                             <div asp-validation-summary="All" class="text-danger"></div>
 
                             <h2 class="fw-bold mb-5 text-uppercase" style="color:black;">Sing Up</h2>
+
+                            <div class="mb-4" style="border:1px solid darkviolet;">
+                                <input name="file" type="file" class="form-control form-control-lg border border-primary" />
+                            </div>
 
                             <div class="mb-4" style="border:1px solid darkviolet;">
                                 <input asp-for="FirstName" type="text" id="typeFirstnameX" placeholder="First Name" class="form-control form-control-lg" />

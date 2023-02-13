@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Udemy.Business.Abstract;
 using Udemy.WebUI.Identity;
 using Udemy.WebUI.Models;
+using Udemy.WebUI.Service;
 
 namespace Udemy.WebUI.Controllers
 {
@@ -11,11 +12,21 @@ namespace Udemy.WebUI.Controllers
 
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private IHttpContextAccessor httpContextAccessor;
+        private IWebHostEnvironment webHost;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly IStorageService _storageService;
+        private readonly IConfiguration _configuration;
+        Uri coursephotouri = null;
+
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.httpContextAccessor = httpContextAccessor;
+            this.webHost = webHost;
+            _storageService = storageService;
+            _configuration = configuration;
         }
 
 
@@ -77,19 +88,35 @@ namespace Udemy.WebUI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterModel model,IFormFile file)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
+            if (file != null)
+            {
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                coursephotouri = await _storageService.UploadPhoto(file);
+                TempData.Add("Image", coursephotouri.ToString());
+                model.ImageUrl = coursephotouri.ToString();
+            }
+
             var user = new User()
             {
+                
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserName = model.UserName,
-                Email = model.Email
+                Email = model.Email,
+                ImageUrl=model.ImageUrl
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

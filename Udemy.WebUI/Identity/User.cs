@@ -8,6 +8,7 @@ namespace Udemy.WebUI.Identity
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int MyTeacherProfileId { get; set; }
+        public string ImageUrl { get; set; }
 
     }
 }
