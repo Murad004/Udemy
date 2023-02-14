@@ -4,6 +4,7 @@ using Udemy.Business.Abstract;
 using Udemy.WebUI.Identity;
 using Udemy.WebUI.Models;
 using Udemy.WebUI.Service;
+using Udemy.WebUI.Service.EmailService;
 
 namespace Udemy.WebUI.Controllers
 {
@@ -14,12 +15,13 @@ namespace Udemy.WebUI.Controllers
         private SignInManager<User> _signInManager;
         private IHttpContextAccessor httpContextAccessor;
         private IWebHostEnvironment webHost;
+        private IEmailSender _emailSender;
 
         private readonly IStorageService _storageService;
         private readonly IConfiguration _configuration;
         Uri coursephotouri = null;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,6 +29,7 @@ namespace Udemy.WebUI.Controllers
             this.webHost = webHost;
             _storageService = storageService;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
 
@@ -119,12 +122,12 @@ namespace Udemy.WebUI.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //var url = Url.Action("ConfirmEmail", "Account", new { UserId = user.Id, token = code });
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var url = Url.Action("ConfirmEmail", "Account", new { UserId = user.Id, token = code });
 
-                //await _emailSender.SendEmailAsync(model.Email, "Hesabi Dogrulayin", $" Linke tiklayin <a href='https://localhost:27357{url}'>Onayla</a>");
+                await _emailSender.SendEmailAsync(model.Email, "Hesabi Dogrulayin", $" Linke tiklayin <a href='https://localhost:5107{url}'>Onayla</a>");
 
-               await _userManager.AddToRoleAsync(user, "Users");
+                await _userManager.AddToRoleAsync(user, "Users");
 
                 return RedirectToAction("Login", "Account");
 
@@ -137,6 +140,29 @@ namespace Udemy.WebUI.Controllers
             //TempData.Add("messages", "Registration can not successfully");
             return View(model);
 
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string UserId, string token)
+        {
+            if (UserId == null || token == null)
+            {
+                return View();
+            }
+
+
+            var user = await _userManager.FindByIdAsync(UserId);
+            if (user != null)
+            {
+
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    return View();
+                }
+
+            }
+
+            return View();
         }
 
 

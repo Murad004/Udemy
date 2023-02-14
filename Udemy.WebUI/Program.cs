@@ -8,6 +8,7 @@ using Udemy.DataAccess.Concrete;
 using Udemy.DataAccess.Concrete.EntityFramework;
 using Udemy.WebUI.Identity;
 using Udemy.WebUI.Service;
+using Udemy.WebUI.Service.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ITopicRepository, TopicRepository>();
@@ -39,6 +40,10 @@ builder.Services.AddScoped<ICourseNotificationService, CourseNotificationManager
 builder.Services.AddScoped<IAdminNotificationService, AdminNotificationManager>();
 
 
+builder.Services.AddScoped<IEmailSender, HotmailEmailSender>(i =>
+ new HotmailEmailSender("smtp.office365.com", 587, true, "sadixov377@hotmail.com", "05b9Yr6s")
+
+);
 
 builder.Services.AddDbContext<UdemyContext>(options => options.UseSqlServer(
 

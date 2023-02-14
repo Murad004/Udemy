@@ -11,5 +11,9 @@ namespace Udemy.WebUI.Helper
         public static int SelectedCategoryId { get; set; }
         public static int SelectedSubCategoryId { get; set; }
         public static ObjectiveAndOutcomes objective { get; set; }
+
+        public static int  RoleId { get; set; }
+        public static string UserId { get; set; }
+
     }
 }

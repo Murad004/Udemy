@@ -25,7 +25,8 @@ namespace Udemy.WebUI.Controllers
         private IObjectiveService _objectiveService;
         private IRequirementService _requirementService;
         private IVideoService _videoService;
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, ICategoryService categoryService, ISubCategoryService subCategoryService, ITopicService topicService, ICourseNotificationService courseNotificationService, IAdminNotificationService adminNotificationService, ICourseService courseService, ITeacherService teacherService, IObjectiveService objectiveService, IRequirementService requirementService, IVideoService videoService)
+        private ApplicationContext _identityContext;
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, ICategoryService categoryService, ISubCategoryService subCategoryService, ITopicService topicService, ICourseNotificationService courseNotificationService, IAdminNotificationService adminNotificationService, ICourseService courseService, ITeacherService teacherService, IObjectiveService objectiveService, IRequirementService requirementService, IVideoService videoService, ApplicationContext identityContext)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -39,6 +40,7 @@ namespace Udemy.WebUI.Controllers
             _objectiveService = objectiveService;
             _requirementService = requirementService;
             _videoService = videoService;
+            _identityContext = identityContext;
         }
 
 
@@ -298,13 +300,15 @@ namespace Udemy.WebUI.Controllers
         //Manafer Processes
 
 
-        public IActionResult Users()
+        public async Task<IActionResult> Users()
         {
-            return View(new AdminViewModel { Users = _userManager.Users.ToList(),Courses=_courseService.GetAll()});
+            var users = await _userManager.GetUsersInRoleAsync("Users");
+            return View(new AdminViewModel { Users = users.ToList(), Courses = _courseService.GetAll() });
         }
 
-        public IActionResult GetAllCourse()
+        public IActionResult UserDetails()
         {
+
             return View();
         }
 
