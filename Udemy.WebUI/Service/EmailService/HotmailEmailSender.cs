@@ -22,16 +22,16 @@ namespace Udemy.WebUI.Service.EmailService
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var client = new SmtpClient(_host, _port)
-            {
-                Credentials = new NetworkCredential(_userName, _password),
-                EnableSsl = _enableSSL,
-                UseDefaultCredentials=false
-            };
+            var client = new SmtpClient();
 
+            client.Host = "smtp.office365.com";
+            client.Port = 587;
+            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential("sadikhov377@gmail.com", "0775966907m");
+            
 
             return client.SendMailAsync(
-                  new MailMessage(this._userName, email, subject, htmlMessage)
+                  new MailMessage("sadikhov377@gmail.com", email, subject, htmlMessage)
                   {
                       IsBodyHtml=true
                   }

@@ -38,12 +38,7 @@ builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<INotificationService, NotificationManager>();
 builder.Services.AddScoped<ICourseNotificationService, CourseNotificationManager>();
 builder.Services.AddScoped<IAdminNotificationService, AdminNotificationManager>();
-
-
-builder.Services.AddScoped<IEmailSender, HotmailEmailSender>(i =>
- new HotmailEmailSender("smtp.office365.com", 587, true, "sadixov377@hotmail.com", "05b9Yr6s")
-
-);
+builder.Services.AddScoped<IEmailSender, HotmailEmailSender>();
 
 builder.Services.AddDbContext<UdemyContext>(options => options.UseSqlServer(
 
