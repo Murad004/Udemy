@@ -26,49 +26,53 @@
         </div>
     }
 
-    <form asp-controller="Admin" asp-action="AddCategory" method="post">
 
 
-        <div id="CategoryDiv" class="w-100 mx-auto text-center mt-5" style="border-radius:15px;background-color:darkblue;">
-            <h1 class="pt-3 pb-2 text-white">Categories</h1>
-            <div class="bg-white w-100">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Some Process</th>
+
+    <div id="CategoryDiv" class="w-100 mx-auto text-center mt-5" style="border-radius:15px;background-color:darkblue;">
+        <h1 class="pt-3 pb-2 text-white">Categories</h1>
+        <div class="bg-white w-100">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Some Process</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <tr class="text-start">
+                            <th scope="row">@category.CategoryId</th>
+                            <td>@category.CategoryName</td>
+                            <td>
+                                <div>
+                                    <form asp-controller="Admin" asp-action="SubCategoryList" method="post" class="d-inline">
+                                        <button type="submit" class="btn ms-3 text-white" style="background-color:darkblue;">Subcategories</button>
+                                        <input type="hidden" name="categoryId" value="@category.CategoryId">
+                                    </form>
+                                    <a class="btn ms-2 text-white" style="background-color:darkblue;">Courses</a>
+                                    <form asp-controller="Admin" asp-action="RemoveCategory" method="post" style="display:inline;">
+
+                                        <button type="submit" class="btn ms-2 text-white" style="background-color:red;">Remove</button>
+                                        <input type="hidden" name="categoryId" value="@category.CategoryId">
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var category in Model.Categories)
-                        {
-                            <tr class="text-start">
-                                <th scope="row">@category.CategoryId</th>
-                                <td>@category.CategoryName</td>
-                                <td>
-                                    <div>
-                                        <a class="btn ms-3 text-white" style="background-color:darkblue;">Subcategories</a>
-                                        <a class="btn ms-2 text-white" style="background-color:darkblue;">Courses</a>
-                                        <form asp-controller="Admin" asp-action="RemoveCategory" method="post" style="display:inline;">
-
-                                            <button type="submit" class="btn ms-2 text-white" style="background-color:red;">Remove</button>
-                                            <input type="hidden" name="categoryId" value="@category.CategoryId">
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
+                    }
+                </tbody>
+            </table>
         </div>
-        <a id="AddCategoryBtn" class="btn w-100 mt-1 text-white" style="background-color:darkblue;">
-            Add New Category
-        </a>
 
+    </div>
 
+    <a id="AddCategoryBtn" class="btn w-100 mt-1 text-white" style="background-color:darkblue;">
+        Add New Category
+    </a>
+
+    <form asp-controller="Admin" asp-action="AddCategory" method="post">
         <div id="AddCategoryDiv" class="text-center mx-auto mt-5" style="border:1px solid #E8E2E2;border-radius:7px;">
             <input asp-for="@Model.addCategoryModel.CategoryName" type="text" class="p-2 mt-2 d-block mx-auto" style="border:1px solid #362FD9;border-radius:5px;font-size:1.3em;font-weight:500;color:black;" placeholder="Category name" />
             <button id="SubmitBtn" type="submit" class="btn btn-outline-dark p-2 mt-2 mb-2 d-block mx-auto" style="border:1px solid black;border-radius:4px;font-size:1.2em;font-weight:500;">Add Category</button>

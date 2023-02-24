@@ -299,13 +299,13 @@ namespace Udemy.WebUI.Controllers
 
         //Manafer Processes
 
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Users()
         {
             var users = await _userManager.GetUsersInRoleAsync("Users");
             return View(new AdminViewModel { Users = users.ToList(), Courses = _courseService.GetAll() });
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult UserDetails()
         {
 

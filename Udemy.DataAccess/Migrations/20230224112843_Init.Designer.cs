@@ -12,7 +12,7 @@ using Udemy.DataAccess.Concrete.EntityFramework;
 namespace Udemy.DataAccess.Migrations
 {
     [DbContext(typeof(UdemyContext))]
-    [Migration("20230215103215_Init")]
+    [Migration("20230224112843_Init")]
     partial class Init
     {
         /// <inheritdoc />

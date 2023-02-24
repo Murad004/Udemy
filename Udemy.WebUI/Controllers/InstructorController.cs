@@ -135,20 +135,21 @@ namespace Udemy.WebUI.Controllers
                 {
 
                     Course c = new Course();
-                    if (file != null)
-                    {
-                        
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
+                    //if (file != null)
+                    //{
 
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-                        model.CourseViewModel.ImagePath = "~/Images/" + file.FileName;
-                        coursephotouri = await _storageService.UploadPhoto(file);
-                        TempData.Add("Image", coursephotouri.ToString());
-                        c.ImageUrl = coursephotouri.ToString();
-                    }
+                    //    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
+
+                    //    using (var stream = new FileStream(path, FileMode.Create))
+                    //    {
+                    //        await file.CopyToAsync(stream);
+                    //    }
+                    //    model.CourseViewModel.ImagePath = "~/Images/" + file.FileName;
+                    //    coursephotouri = await _storageService.UploadPhoto(file);
+                    //    TempData.Add("Image", coursephotouri.ToString());
+                    //    c.ImageUrl = coursephotouri.ToString();
+                    //}
+                    c.ImageUrl = "asdfghjkl";
 
                     c.CourseTitle = model.CourseViewModel.CourseTitle;
                     c.CourseContent = model.CourseViewModel.CourseContent;

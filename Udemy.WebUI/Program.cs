@@ -8,7 +8,6 @@ using Udemy.DataAccess.Concrete;
 using Udemy.DataAccess.Concrete.EntityFramework;
 using Udemy.WebUI.Identity;
 using Udemy.WebUI.Service;
-using Udemy.WebUI.Service.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ITopicRepository, TopicRepository>();
@@ -38,7 +37,7 @@ builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<INotificationService, NotificationManager>();
 builder.Services.AddScoped<ICourseNotificationService, CourseNotificationManager>();
 builder.Services.AddScoped<IAdminNotificationService, AdminNotificationManager>();
-builder.Services.AddScoped<IEmailSender, HotmailEmailSender>();
+//builder.Services.AddScoped<IEmailSender, HotmailEmailSender>();
 
 builder.Services.AddDbContext<UdemyContext>(options => options.UseSqlServer(
 

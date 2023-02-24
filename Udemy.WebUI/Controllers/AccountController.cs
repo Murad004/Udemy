@@ -4,7 +4,6 @@ using Udemy.Business.Abstract;
 using Udemy.WebUI.Identity;
 using Udemy.WebUI.Models;
 using Udemy.WebUI.Service;
-using Udemy.WebUI.Service.EmailService;
 
 namespace Udemy.WebUI.Controllers
 {
@@ -15,13 +14,13 @@ namespace Udemy.WebUI.Controllers
         private SignInManager<User> _signInManager;
         private IHttpContextAccessor httpContextAccessor;
         private IWebHostEnvironment webHost;
-        private IEmailSender _emailSender;
+        //private IEmailSender _emailSender;
 
         private readonly IStorageService _storageService;
         private readonly IConfiguration _configuration;
         Uri coursephotouri = null;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration, IEmailSender emailSender)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -29,7 +28,7 @@ namespace Udemy.WebUI.Controllers
             this.webHost = webHost;
             _storageService = storageService;
             _configuration = configuration;
-            _emailSender = emailSender;
+            //_emailSender = emailSender;
         }
 
 
@@ -91,23 +90,23 @@ namespace Udemy.WebUI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model,IFormFile file)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            if (file != null)
-            {
+            //if (file != null)
+            //{
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
+            //    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
 
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-                coursephotouri = await _storageService.UploadPhoto(file);
-            }
+            //    using (var stream = new FileStream(path, FileMode.Create))
+            //    {
+            //        await file.CopyToAsync(stream);
+            //    }
+            //    coursephotouri = await _storageService.UploadPhoto(file);
+            //}
 
             var user = new User()
             {
@@ -116,7 +115,7 @@ namespace Udemy.WebUI.Controllers
                 LastName = model.LastName,
                 UserName = model.UserName,
                 Email = model.Email,
-                ImageUrl=coursephotouri.ToString()
+                ImageUrl= "Images/adminlogo.png"
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -125,7 +124,7 @@ namespace Udemy.WebUI.Controllers
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var url = Url.Action("ConfirmEmail", "Account", new { UserId = user.Id, token = code });
 
-                await _emailSender.SendEmailAsync(model.Email, "Hesabi Dogrulayin", $" Linke tiklayin <a href='https://localhost:5107{url}'>Onayla</a>");
+                //await _emailSender.SendEmailAsync(model.Email, "Hesabi Dogrulayin", $" Linke tiklayin <a href='https://localhost:5107{url}'>Onayla</a>");
 
                 await _userManager.AddToRoleAsync(user, "Users");
 
