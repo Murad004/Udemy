@@ -4,6 +4,7 @@ using Udemy.Business.Abstract;
 using Udemy.WebUI.Identity;
 using Udemy.WebUI.Models;
 using Udemy.WebUI.Service;
+using Udemy.WebUI.Service.CloudinaryService;
 
 namespace Udemy.WebUI.Controllers
 {
@@ -17,10 +18,11 @@ namespace Udemy.WebUI.Controllers
         //private IEmailSender _emailSender;
 
         private readonly IStorageService _storageService;
+        private readonly ICloudinaryService _cloudService;
         private readonly IConfiguration _configuration;
         Uri coursephotouri = null;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment webHost, IStorageService storageService, IConfiguration configuration, ICloudinaryService cloudService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -28,6 +30,7 @@ namespace Udemy.WebUI.Controllers
             this.webHost = webHost;
             _storageService = storageService;
             _configuration = configuration;
+            _cloudService = cloudService;
             //_emailSender = emailSender;
         }
 
@@ -90,32 +93,32 @@ namespace Udemy.WebUI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register(RegisterModel model,IFormFile file)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            //if (file != null)
-            //{
+            if (file != null)
+            {
 
-            //    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", file.FileName);
 
-            //    using (var stream = new FileStream(path, FileMode.Create))
-            //    {
-            //        await file.CopyToAsync(stream);
-            //    }
-            //    coursephotouri = await _storageService.UploadPhoto(file);
-            //}
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                coursephotouri = await _cloudService.Upload(file);
+            }
 
             var user = new User()
             {
-                
+
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserName = model.UserName,
                 Email = model.Email,
-                ImageUrl= "Images/adminlogo.png"
+                ImageUrl = coursephotouri.ToString()
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

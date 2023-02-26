@@ -25,7 +25,7 @@
 </style>
 
 
-<div class="mt-4 text-center" style="height:90vh;width:150vh;border:1px solid black;border-radius:20px;">
+<div class="mt-4 text-center mx-auto" style="height:90vh;width:150vh;border:1px solid black;border-radius:20px;">
     <div class="mt-3">
         <input type="text" class="w-50 mx-auto p-2 ps-3 text-start" style="border:1px solid #362FD9;border-radius:25px;font-size:1.3em;font-weight:500;color:darkgray;" placeholder="Search for User" />
     </div>
@@ -34,7 +34,14 @@
         {
             <div class="UserDiv w-50 row pt-2 mt-2 mx-auto">
                 <div class="col-1">
-                    <img src="~/Images/adminlogo.png" class="d-inline-block ms-1" width="60" height="60" style="border-radius:50%;" />
+                    @if(user.ImageUrl != null)
+                    {
+                        <img src="@user.ImageUrl" class="d-inline-block ms-1" width="60" height="60" style="border-radius:50%;" />
+                    }
+                    else
+                    {
+                        <img src="~/Images/47774.png" class="d-inline-block ms-1" width="60" height="60" style="border-radius:50%;" />
+                    }
 
                 </div>
                 <div class="col">
