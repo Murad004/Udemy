@@ -1,5 +1,6 @@
 ﻿using Udemy.Business.Abstract;
 using Udemy.Entity.Concrete;
+using Udemy.WebUI.Identity;
 
 namespace Udemy.WebUI.Helper
 {
@@ -14,6 +15,10 @@ namespace Udemy.WebUI.Helper
 
         public static int  RoleId { get; set; }
         public static string UserId { get; set; }
+
+
+
+        public static string SearchForUser { get; set; }
 
     }
 }

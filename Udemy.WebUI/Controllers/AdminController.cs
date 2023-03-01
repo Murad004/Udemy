@@ -51,33 +51,36 @@ namespace Udemy.WebUI.Controllers
         }
 
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ShowCourseDetails()
         {
-            return View(new AdminViewModel {  AdminNotifications=_adminNotificationService.GetAll(),
-                Courses=_courseService.GetAll(),
-                Categories=_categoryService.GetAll(),
-                SubCategories=_subCategoryService.GetAll(),
-                Topics=_topicService.GetAll(),
-                Teachers=_teacherService.GetAll(),
-                ObjectiveAndOutcomes=_objectiveService.GetAll(),
-                Requirements=_requirementService.GetAll(),
-                Videos=_videoService.GetAll()});
+            return View(new AdminViewModel
+            {
+                AdminNotifications = _adminNotificationService.GetAll(),
+                Courses = _courseService.GetAll(),
+                Categories = _categoryService.GetAll(),
+                SubCategories = _subCategoryService.GetAll(),
+                Topics = _topicService.GetAll(),
+                Teachers = _teacherService.GetAll(),
+                ObjectiveAndOutcomes = _objectiveService.GetAll(),
+                Requirements = _requirementService.GetAll(),
+                Videos = _videoService.GetAll()
+            });
         }
 
-        [Authorize(Roles ="Admin")]
-        public IActionResult AcceptedCourse(int AcceptedANId,int AcceptedCourseId)
+        [Authorize(Roles = "Admin")]
+        public IActionResult AcceptedCourse(int AcceptedANId, int AcceptedCourseId)
         {
             var an = _adminNotificationService.GetById(AcceptedANId);
 
-            foreach(var course in an.Courses)
+            foreach (var course in an.Courses)
             {
                 if (course.CourseId == AcceptedCourseId)
                 {
                     an.Courses.Remove(course);
-                    foreach(var cn in _courseNotificationService.GetAll())
+                    foreach (var cn in _courseNotificationService.GetAll())
                     {
-                        if(cn.Course.CourseId == AcceptedCourseId)
+                        if (cn.Course.CourseId == AcceptedCourseId)
                         {
                             _courseNotificationService.Delete(cn);
                         }
@@ -85,7 +88,7 @@ namespace Udemy.WebUI.Controllers
                     _courseService.Add(course);
                 }
             }
-            
+
             return RedirectToAction("Index", "Admin");
         }
 
@@ -164,9 +167,9 @@ namespace Udemy.WebUI.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult TopicList(int subCategoryId)
         {
-            if(subCategoryId > 0)
+            if (subCategoryId > 0)
             {
-                ClassHelper.SubCategoryIdForAdd=subCategoryId;
+                ClassHelper.SubCategoryIdForAdd = subCategoryId;
             }
             var subcategory = _subCategoryService.GetById(ClassHelper.SubCategoryIdForAdd);
             return View(new AdminViewModel { Topics = _topicService.GetAll().Where(c => c.SubCategory == subcategory).ToList()/*,SubCategoryName=_subCategoryService.GetById(subCategoryId).SubCategoryName */});
@@ -295,7 +298,11 @@ namespace Udemy.WebUI.Controllers
         }
 
 
-
+        public IActionResult SearchUser(string Search)
+        {
+            ClassHelper.SearchForUser = Search;
+            return RedirectToAction("Users", "Admin");
+        }
 
         //Manafer Processes
 
@@ -303,7 +310,13 @@ namespace Udemy.WebUI.Controllers
         public async Task<IActionResult> Users()
         {
             var users = await _userManager.GetUsersInRoleAsync("Users");
-            return View(new AdminViewModel { Users = users.ToList(), Courses = _courseService.GetAll() });
+
+            if (ClassHelper.SearchForUser != null)
+            {
+                return View(new AdminViewModel { Users = users.Where(u => u.Email==ClassHelper.SearchForUser).ToList(), Courses = _courseService.GetAll(), Teachers = _teacherService.GetAll() });
+                ClassHelper.SearchForUser = null;
+            }
+            return View(new AdminViewModel { Users = users.ToList(), Courses = _courseService.GetAll(), Teachers = _teacherService.GetAll() });
         }
         [Authorize(Roles = "Admin")]
         public IActionResult UserDetails()
