@@ -319,10 +319,11 @@ namespace Udemy.WebUI.Controllers
             return View(new AdminViewModel { Users = users.ToList(), Courses = _courseService.GetAll(), Teachers = _teacherService.GetAll() });
         }
         [Authorize(Roles = "Admin")]
-        public IActionResult UserDetails()
+        public async Task<IActionResult> UserDetails(string userId)
         {
-
-            return View();
+            var users = await _userManager.GetUsersInRoleAsync("Users");
+            var user = users.FirstOrDefault(u => u.Id == userId);
+            return View(new AdminViewModel {UserForShowDetails=user,Courses = _courseService.GetAll(), Teachers = _teacherService.GetAll() });
         }
 
 

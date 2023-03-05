@@ -10,16 +10,33 @@
 }
 
 <style>
-    .UserDiv {
-        cursor: pointer;
+    /*.UserDiv {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+            .UserDiv:hover {
+                background-color: #362FD9;
+                color: white;
+                transition: 0.2s;
+            }*/
+
+
+    .DetBtn {
+        border: 2px solid #362FD9;
+        border-radius: 5px;
+        color: black;
+        background-color: white;
+        font-weight:500;
+        padding:5px;
         transition: 0.2s;
     }
 
-        .UserDiv:hover {
+    .DetBtn:hover{
+        color: white;
             background-color: #362FD9;
-            color: white;
-            transition: 0.2s;
-        }
+        transition: 0.2s;
+    }
 
 
     /* width */
@@ -73,6 +90,7 @@
                 <th>Instructor Account</th>
                 <th>Title</th>
                 <th>Role</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -90,8 +108,6 @@
 
 
 
-                    <a as-asp-controller="Admin" asp-action="UserDetails">
-
 
                 <tr class="UserDiv text-start">
                     <td>
@@ -106,23 +122,23 @@
                             </div>
                         </div>
                     </td>
-                            @foreach (var teacher in Model.Teachers)
-                            {
-                                @if (teacher.MyUserId == user.Id)
-                                {
+                    @foreach (var teacher in Model.Teachers)
+                    {
+                        @if (teacher.MyUserId == user.Id)
+                        {
                             <td>
 
                                 Yes
 
                             </td>
-                                }
-                                else
-                                {
+                        }
+                        else
+                        {
                             <td>
                                 No
                             </td>
-                                }
-                            }
+                        }
+                    }
 
                     <td>
                         <p class="fw-normal mb-1">Not disclosed</p>
@@ -131,10 +147,16 @@
                     <td>
                         User
                     </td>
+                    <form asp-controller="Admin" asp-action="UserDetails" method="post">
+
+                    <td>
+                        <button type="submit" class="DetBtn">Show User</button>
+                        <input type="hidden" name="userId" value="@user.Id">
+                    </td>
+                    </form>
 
 
                 </tr>
-                </a>
 
 
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Udemy.Entity.Concrete;
+using Udemy.WebUI.Identity;
 
 namespace Udemy.WebUI.Models
 {
@@ -20,6 +21,7 @@ namespace Udemy.WebUI.Models
         public List<AdminNotification> AdminNotifications { get; set; }
 
         public int CourseDetailsId { get; set; }
+        public User UserForShowDetails { get; set; }
 
         public int AcceptedCourseId { get; set; }
         public int AcceptedANId { get; set; }
